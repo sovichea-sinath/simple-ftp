@@ -2,8 +2,8 @@ import socket
 import os
 from helpers import get_local_ip, recv_all, recv_until_done
 
-# ip = get_local_ip(os.uname().sysname)
-ip = 'localhost'
+ip = get_local_ip(os.uname().sysname)
+# ip = 'localhost'
 port = int(input('please input port number: '))
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
@@ -32,6 +32,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     conn.sendall(b'ok')
     print('reciving file...')
     data = recv_until_done(conn, file_size)
+    print('len data', len(data))
     with open(file_location, 'wb') as wFile:
       wFile.write(data)
     

@@ -23,15 +23,12 @@ def recv_all(sock: socket.socket):
       return data
 
 def recv_until_done(sock: socket.socket, limit):
-  '''
-  read data from client all at once.
-  '''
-  BUF_SIZE = 1024
-  total = 0
-  data = b''
-  while total < limit:
-    # read 1024 byte at a time.
-    recv = sock.recv(BUF_SIZE)
-    data += recv
-    total += BUF_SIZE
-  return data
+  # Helper function to recv n bytes or return None if EOF is hit
+    data = b''
+    while len(data) < limit:
+      packet = sock.recv(limit - len(data))
+      if not packet:
+        return None
+      data += packet
+    return data
+
